@@ -63,30 +63,30 @@ const deleteItem = (req, res) => {
 
 const likeItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(
-    req.params.itemId, // Find the clothing item by its ID
-    { $addToSet: { likes: req.user._id } }, // Add the user's ID to the 'likes' array if it's not already there
-    { new: true } // Return the updated document after the update
+    req.params.itemId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true }
   )
-    .then((item) => res.status(OK).send({ data: item })) // Send back the updated item
+    .then((item) => res.status(OK).send({ data: item }))
     .catch((err) =>
       res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "Error liking the item", err })
-    ); // Handle errors
+    );
 };
 
 const dislikeItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(
-    req.params.itemId, // Find the clothing item by its ID
-    { $pull: { likes: req.user._id } }, // Remove the user's ID from the 'likes' array
-    { new: true } // Return the updated document after the update
+    req.params.itemId,
+    { $pull: { likes: req.user._id } },
+    { new: true }
   )
-    .then((item) => res.status(OK).send({ data: item })) // Send back the updated item
+    .then((item) => res.status(OK).send({ data: item }))
     .catch((err) =>
       res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "Error unliking the item", err })
-    ); // Handle errors
+    );
 };
 
 module.exports = {

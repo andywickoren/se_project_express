@@ -5,6 +5,8 @@ const {
   getItems,
   updateItem,
   deleteItem,
+  likeItem,
+  dislikeItem,
 } = require("../controllers/clothingItem");
 
 //CRUD
