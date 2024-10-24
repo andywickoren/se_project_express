@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
 const routes = require("./routes");
+
 const app = express();
 const { PORT = 3001 } = process.env;
 app.use(express.json());
@@ -21,7 +22,6 @@ app.use((req, res, next) => {
 });
 
 app.use(routes);
-//redundant?
 
 app.use("/", mainRouter);
 

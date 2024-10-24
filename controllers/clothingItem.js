@@ -2,7 +2,6 @@ const {
   BAD_REQUEST,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
-  NO_CONTENT,
   OK,
 } = require("../utils/errors");
 const ClothingItem = require("../models/clothingItems");
@@ -20,7 +19,7 @@ const createItem = (req, res) => {
           errors: err.errors,
         });
       }
-      res.status(INTERNAL_SERVER_ERROR).send({
+      return res.status(INTERNAL_SERVER_ERROR).send({
         message: "Internal server error during item creation",
         err,
       });
@@ -61,10 +60,11 @@ const deleteItem = (req, res) => {
     .catch((err) => {
       if (err.message === "ItemNotFound") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "Error from deleteItem", err });
     });
@@ -81,10 +81,11 @@ const likeItem = (req, res) => {
     .catch((err) => {
       if (err.message === "ItemNotFound") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "Error liking the item", err });
     });
@@ -101,10 +102,11 @@ const dislikeItem = (req, res) => {
     .catch((err) => {
       if (err.message === "ItemNotFound") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "Error unliking the item", err });
     });
