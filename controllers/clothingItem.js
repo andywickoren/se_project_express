@@ -2,7 +2,6 @@ const {
   BAD_REQUEST,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
-  OK,
 } = require("../utils/errors");
 const ClothingItem = require("../models/clothingItems");
 
@@ -11,7 +10,7 @@ const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
   ClothingItem.create({ name, weather, imageUrl, owner: userId })
-    .then((item) => res.status(OK).send({ data: item }))
+    .then((item) => res.send({ data: item }))
     .catch((err) => {
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({
@@ -21,18 +20,17 @@ const createItem = (req, res) => {
       }
       return res.status(INTERNAL_SERVER_ERROR).send({
         message: "Internal server error during item creation",
-        err,
       });
     });
 };
 
 const getItems = (req, res) => {
   ClothingItem.find({})
-    .then((items) => res.status(OK).send(items))
-    .catch((err) => {
+    .then((items) => res.send(items))
+    .catch(() => {
       res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "Error from getItems", err });
+        .send({ message: "Error from getItems" });
     });
 };
 
@@ -42,7 +40,7 @@ const deleteItem = (req, res) => {
   ClothingItem.findByIdAndDelete(itemId)
     .orFail(() => new Error("ItemNotFound"))
     .then((item) => {
-      res.status(OK).send({ message: "Item deleted successfully", data: item });
+      res.send({ message: "Item deleted successfully", data: item });
     })
     .catch((err) => {
       if (err.message === "ItemNotFound") {
@@ -64,7 +62,7 @@ const likeItem = (req, res) => {
     { new: true }
   )
     .orFail(() => new Error("ItemNotFound"))
-    .then((item) => res.status(OK).send({ data: item }))
+    .then((item) => res.send({ data: item }))
     .catch((err) => {
       if (err.message === "ItemNotFound") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
@@ -85,7 +83,7 @@ const dislikeItem = (req, res) => {
     { new: true }
   )
     .orFail(() => new Error("ItemNotFound"))
-    .then((item) => res.status(OK).send({ data: item }))
+    .then((item) => res.send({ data: item }))
     .catch((err) => {
       if (err.message === "ItemNotFound") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
@@ -102,7 +100,6 @@ const dislikeItem = (req, res) => {
 module.exports = {
   createItem,
   getItems,
-  updateItem,
   deleteItem,
   likeItem,
   dislikeItem,
