@@ -36,19 +36,6 @@ const getItems = (req, res) => {
     });
 };
 
-const updateItem = (req, res) => {
-  const { itemId } = req.params;
-  const { imageUrl } = req.body;
-  ClothingItem.findByIdAndUpdate(itemId, { $set: { imageUrl } })
-    .orFail()
-    .then((item) => res.status(OK).send({ data: item }))
-    .catch((err) => {
-      res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "Error from updateItem", err });
-    });
-};
-
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
   console.log(itemId);
@@ -66,7 +53,7 @@ const deleteItem = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "Error from deleteItem", err });
+        .send({ message: "Error from deleteItem" });
     });
 };
 
@@ -87,7 +74,7 @@ const likeItem = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "Error liking the item", err });
+        .send({ message: "Error liking the item" });
     });
 };
 
@@ -108,7 +95,7 @@ const dislikeItem = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "Error unliking the item", err });
+        .send({ message: "Error unliking the item" });
     });
 };
 
