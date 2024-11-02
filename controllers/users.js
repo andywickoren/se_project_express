@@ -20,14 +20,19 @@ const getUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, avatar } = req.body;
-  User.create({ name, avatar })
-    .then((user) => res.status(201).send(user))
+  const { name, avatar, email, password } = req.body;
 
+  User.create({ name, avatar, email, password })
+    .then((user) => res.status(201).send(user))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+      }
+      if (err.code === 11000) {
+        return res
+          .status(BAD_REQUEST)
+          .send({ message: "Email already exists" });
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
