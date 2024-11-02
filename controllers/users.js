@@ -83,18 +83,24 @@ const createUser = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
-  const { userId } = req.params;
-  User.findById(userId)
-    .orFail()
-    .then((user) => res.send(user))
+const getCurrentUser = (req, res) => {
+  User.findById(req.user._id)
+    .orFail() // This will throw an error if the user is not found
+    .then((user) => {
+      const { _id, email, avatar, name } = user;
+      res.status(200).send({
+        _id,
+        email,
+        avatar,
+        name,
+      });
+    })
     .catch((err) => {
-      console.error(err);
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid ID" });
+      }
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "User not found" });
-      }
-      if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid user ID" });
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
@@ -102,4 +108,36 @@ const getUser = (req, res) => {
     });
 };
 
-module.exports = { getUsers, createUser, getUser, login };
+const updateUser = (req, res) => {
+  const { name, avatar } = req.body;
+
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, avatar },
+    { new: true, runValidators: true }
+  )
+    .orFail()
+    .then((user) => {
+      const { _id, email } = user;
+      res.status(200).send({
+        _id,
+        email,
+        name: user.name,
+        avatar: user.avatar,
+      });
+    })
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return res.status(BAD_REQUEST).send({ message: "Validation failed" });
+      }
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "User not found" });
+      }
+
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
+    });
+};
+
+module.exports = { getUsers, createUser, getCurrentUser, login, updateUser };
