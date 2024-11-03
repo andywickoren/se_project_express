@@ -91,6 +91,7 @@ const getCurrentUser = (req, res) => {
       res.status(200).send({
         _id,
         email,
+
         avatar,
         name,
       });
