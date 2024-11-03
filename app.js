@@ -16,13 +16,6 @@ mongoose
   })
   .catch(console.error);
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "67169c75cd383b669aa51f9e",
-  };
-  next();
-});
-
 app.post("/signin", login);
 app.post("/signup", createUser);
 
