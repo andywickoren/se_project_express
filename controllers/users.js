@@ -7,6 +7,7 @@ const {
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
   CONFLICT_ERROR,
+  UNAUTHORIZED,
 } = require("../utils/errors");
 
 const User = require("../models/user");
@@ -48,20 +49,31 @@ const login = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
+  // if (typeof password !== "string") {
+  //   return res
+  //     .status(BAD_REQUEST)
+  //     .send({ message: "Password must be provided as a string." });
+  // }
 
   if (!email || !password) {
     return res
       .status(BAD_REQUEST)
       .send({ message: "Email and password are required" });
   }
-
-  bcrypt
-    .hash(password, 10)
+  // User.findOne({ email })
+  //   .then((existingUser) => {
+  //     if (existingUser) {
+  //       return res
+  //         .status(CONFLICT_ERROR)
+  //         .send({ message: "Email already exists" });
+  //     }
+  return bcrypt
+    .hash(req.body.password, 10)
     .then((hashedPassword) =>
       User.create({ name, avatar, email, password: hashedPassword })
     )
     .then((user) => {
-      res.status(201).send({
+      res.send({
         name: user.name,
         avatar: user.avatar,
         email: user.email,
@@ -75,7 +87,7 @@ const createUser = (req, res) => {
       if (err.code === 11000) {
         return res
           .status(CONFLICT_ERROR)
-          .send({ message: "Email already exists" });
+          .send({ message: "This email already exists" });
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
@@ -85,7 +97,7 @@ const createUser = (req, res) => {
 
 const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
-    .orFail() // This will throw an error if the user is not found
+    .orFail()
     .then((user) => {
       const { _id, email, avatar, name } = user;
       res.status(200).send({
