@@ -41,9 +41,9 @@ const deleteItem = (req, res) => {
     .orFail(() => new Error("ItemNotFound"))
     .then((item) => {
       if (item.owner.toString() !== req.user._id.toString()) {
-        return res
-          .status(FORBIDDEN)
-          .send({ message: "Forbidden: You cannot delete this item" });
+        const error = new Error("User doesn't own item");
+        error.name = "Forbidden";
+        throw error;
       }
       return ClothingItem.findByIdAndDelete(itemId);
     })
@@ -56,6 +56,11 @@ const deleteItem = (req, res) => {
       }
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
+      }
+      if (err.name === "Forbidden") {
+        return res
+          .status(FORBIDDEN)
+          .send({ message: "Forbidden: You cannot delete this item" });
       }
       return res
         .status(INTERNAL_SERVER_ERROR)

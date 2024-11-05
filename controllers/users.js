@@ -49,24 +49,13 @@ const login = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
-  // if (typeof password !== "string") {
-  //   return res
-  //     .status(BAD_REQUEST)
-  //     .send({ message: "Password must be provided as a string." });
-  // }
 
   if (!email || !password) {
     return res
       .status(BAD_REQUEST)
       .send({ message: "Email and password are required" });
   }
-  // User.findOne({ email })
-  //   .then((existingUser) => {
-  //     if (existingUser) {
-  //       return res
-  //         .status(CONFLICT_ERROR)
-  //         .send({ message: "Email already exists" });
-  //     }
+
   return bcrypt
     .hash(req.body.password, 10)
     .then((hashedPassword) =>
