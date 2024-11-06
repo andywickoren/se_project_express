@@ -12,19 +12,6 @@ const {
 
 const User = require("../models/user");
 
-const getUsers = (req, res) => {
-  User.find({})
-    .then((users) => {
-      res.send(users);
-    })
-    .catch((err) => {
-      console.error(err);
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" });
-    });
-};
-
 const login = (req, res) => {
   const { email, password } = req.body;
 
@@ -34,16 +21,23 @@ const login = (req, res) => {
       .send({ message: "Email and password are required" });
   }
 
-  User.findUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-      res.send({ token });
+      return res.send({ token });
     })
     .catch((err) => {
       console.error(err);
-      res.status(UNAUTHORIZED).send({ message: "Incorrect email or password" });
+      if (err.message === "Incorrect email or password") {
+        return res
+          .status(UNAUTHORIZED)
+          .send({ message: "Incorrect email or password" });
+      }
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .send({ message: "An internal server error occurred" });
     });
 };
 
@@ -89,7 +83,7 @@ const getCurrentUser = (req, res) => {
     .orFail()
     .then((user) => {
       const { _id, email, avatar, name } = user;
-      res.status(200).send({
+      res.send({
         _id,
         email,
 
@@ -121,7 +115,7 @@ const updateUser = (req, res) => {
     .orFail()
     .then((user) => {
       const { _id, email } = user;
-      res.status(200).send({
+      res.send({
         _id,
         email,
         name: user.name,
@@ -142,4 +136,4 @@ const updateUser = (req, res) => {
     });
 };
 
-module.exports = { getUsers, createUser, getCurrentUser, login, updateUser };
+module.exports = { createUser, getCurrentUser, login, updateUser };

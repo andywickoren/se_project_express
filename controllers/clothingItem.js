@@ -16,7 +16,6 @@ const createItem = (req, res) => {
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({
           message: "Invalid input",
-          errors: err.errors,
         });
       }
       return res.status(INTERNAL_SERVER_ERROR).send({
