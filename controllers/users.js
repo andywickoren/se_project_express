@@ -42,7 +42,7 @@ const login = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, avatar, email, password } = req.body;
+  const { name, avatar = "", email, password } = req.body;
 
   if (!email || !password) {
     return res
@@ -58,7 +58,7 @@ const createUser = (req, res) => {
     .then((user) => {
       res.send({
         name: user.name,
-        avatar: user.avatar,
+        avatar: user.avatar || "",
         email: user.email,
       });
     })

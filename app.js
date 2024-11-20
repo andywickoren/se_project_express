@@ -7,7 +7,7 @@ const app = express();
 const { createUser, login } = require("./controllers/users");
 const routes = require("./routes");
 
-const { PORT = 3001 } = process.env;
+const { PORT = 8000 } = process.env;
 
 app.use(cors());
 app.use(express.json());
