@@ -1,20 +1,5 @@
-// const BAD_REQUEST = 400;
-// const UNAUTHORIZED = 401;
-// const FORBIDDEN = 403;
-// const NOT_FOUND = 404;
 // const INTERNAL_SERVER_ERROR = 500;
 // const NO_CONTENT = 204;
-// const CONFLICT_ERROR = 409;
-
-// module.exports = {
-//   BAD_REQUEST,
-//   FORBIDDEN,
-//   NOT_FOUND,
-//   INTERNAL_SERVER_ERROR,
-//   NO_CONTENT,
-//   CONFLICT_ERROR,
-//   UNAUTHORIZED,
-// };
 
 // errors.js
 class BadRequestError extends Error {
