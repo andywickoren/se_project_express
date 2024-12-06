@@ -10,42 +10,6 @@ const createItem = (req, res, next) => {
   const userId = req.user._id;
   const { name, weather, imageUrl } = req.body;
 
-  //   ClothingItem.create({ name, weather, imageUrl, owner: userId })
-  //   .then((item) => res.send({ data: item }))
-  //   .catch((err) => {
-  //     // Instead of sending a response, call `next(err)` to pass it to the error handler middleware
-  //     if (err.name === "ValidationError") {
-  //       err.statusCode = 400; // BAD_REQUEST
-  //       err.message = "Invalid input";
-  //     } else {
-  //       err.statusCode = 500; // INTERNAL_SERVER_ERROR
-  //       err.message = "Internal server error during item creation";
-  //     }
-  //     next(err);  // Pass error to middleware
-  //   });
-  // };
-
-  // const { BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR, FORBIDDEN } = require("../utils/errors");
-
-  // const createItem = (req, res, next) => {
-  //   const userId = req.user._id;
-  //   const { name, weather, imageUrl } = req.body;
-
-  //   ClothingItem.create({ name, weather, imageUrl, owner: userId })
-  //     .then((item) => res.send({ data: item }))
-  //     .catch((err) => {
-  //       // If it's a validation error, pass it to the error handler middleware
-  //       if (err.name === "ValidationError") {
-  //         err.statusCode = BAD_REQUEST;
-  //         err.message = "Invalid input";
-  //       } else {
-  //         err.statusCode = INTERNAL_SERVER_ERROR;
-  //         err.message = "Internal server error during item creation";
-  //       }
-  //       next(err);  // Pass the error to the error handler middleware
-  //     });
-  // };
-
   ClothingItem.create({ name, weather, imageUrl, owner: userId })
     .then((item) => res.send({ data: item }))
     .catch((err) => {
