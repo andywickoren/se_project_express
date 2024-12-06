@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { celebrate, Joi, errors } = require("celebrate");
+const validator = require("validator");
+const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
@@ -23,6 +26,10 @@ app.post("/signin", login);
 app.post("/signup", createUser);
 
 app.use("/", routes);
+
+app.use(errors()); // celebrate error handler
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
