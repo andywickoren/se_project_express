@@ -5,6 +5,7 @@ const { errors } = require("celebrate");
 const validator = require("validator");
 const errorHandler = require("./middleware/errorHandler");
 const { validateLogin, validateSignup } = require("./middleware/validation");
+const { requestLogger, errorLogger } = require("./middleware/logger");
 
 // module.exports.validateCardBody = celebrate({
 //   body: Joi.object().keys({
@@ -40,9 +41,11 @@ mongoose
 
 app.post("/signin", validateLogin, login);
 app.post("/signup", validateSignup, createUser);
+app.use(requestLogger);
 
 app.use("/", routes);
 
+app.use(errorLogger);
 app.use(errors()); // celebrate error handler
 
 app.use(errorHandler);
