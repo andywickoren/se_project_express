@@ -6,6 +6,7 @@ const validator = require("validator");
 const errorHandler = require("./middleware/errorHandler");
 const { validateLogin, validateSignup } = require("./middleware/validation");
 const { requestLogger, errorLogger } = require("./middleware/logger");
+require("dotenv").config();
 
 // 35.222.65.16
 
