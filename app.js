@@ -7,6 +7,8 @@ const errorHandler = require("./middleware/errorHandler");
 const { validateLogin, validateSignup } = require("./middleware/validation");
 const { requestLogger, errorLogger } = require("./middleware/logger");
 
+// 35.222.65.16
+
 // module.exports.validateCardBody = celebrate({
 //   body: Joi.object().keys({
 //     name: Joi.string().required().min(2).max(30).messages({
