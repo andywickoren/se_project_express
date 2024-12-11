@@ -9,6 +9,7 @@ const { requestLogger, errorLogger } = require("./middleware/logger");
 require("dotenv").config();
 
 // 35.222.65.16
+// ssh andywickoren@35.222.65.16
 
 // module.exports.validateCardBody = celebrate({
 //   body: Joi.object().keys({
@@ -24,6 +25,8 @@ require("dotenv").config();
 //     }),
 //   }),
 // });
+
+// NTA5MTE5ODk0
 
 const app = express();
 
@@ -41,6 +44,12 @@ mongoose
     console.log("Connected to DB");
   })
   .catch(console.error);
+
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
 
 app.post("/signin", validateLogin, login);
 app.post("/signup", validateSignup, createUser);

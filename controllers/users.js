@@ -48,7 +48,7 @@ const createUser = (req, res, next) => {
     )
     .then((user) => {
       res.send({
-        name: user.name,git 
+        name: user.name,
         avatar: user.avatar || "",
         email: user.email,
       });
