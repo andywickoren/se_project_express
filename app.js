@@ -35,11 +35,16 @@ const routes = require("./routes");
 
 const { PORT = 8000 } = process.env;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://summerclothes.twilightparadox.com",
+  })
+);
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wtwr_db")
+  .connect("mongodb://localhost:27017/wtwr_db")
+
   .then(() => {
     console.log("Connected to DB");
   })
