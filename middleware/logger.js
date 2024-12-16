@@ -1,7 +1,6 @@
 const winston = require("winston");
 const expressWinston = require("express-winston");
 
-//custom formatter
 const messageFormat = winston.format.combine(
   winston.format.timestamp(),
   winston.format.printf(

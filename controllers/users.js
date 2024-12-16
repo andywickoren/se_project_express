@@ -2,13 +2,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 
-// const {
-//   BadRequestError,
-//   UnauthorizedError,
-//   NotFoundError,
-//   ConflictError,
-// } = require("../utils/errors");
-
 const BadRequestError = require("../utils/BadRequestError");
 const UnauthorizedError = require("../utils/UnathorizedError");
 const NotFoundError = require("../utils/NotFoundError");
@@ -66,7 +59,7 @@ const createUser = (req, res, next) => {
       if (err.code === 11000) {
         return next(new ConflictError("This email already exists"));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -91,7 +84,7 @@ const getCurrentUser = (req, res, next) => {
       if (err.name === "DocumentNotFoundError") {
         return next(new NotFoundError("User not found"));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -122,7 +115,7 @@ const updateUser = (req, res, next) => {
         return next(new NotFoundError("User not found"));
       }
 
-      next(err);
+      return next(err);
     });
 };
 

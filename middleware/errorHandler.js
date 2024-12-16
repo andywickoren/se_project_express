@@ -1,19 +1,3 @@
-const {
-  BAD_REQUEST,
-  NOT_FOUND,
-  INTERNAL_SERVER_ERROR,
-  FORBIDDEN,
-} = require("../utils/errors");
-
-// error-handler.js
-// const {
-//   BadRequestError,
-//   UnauthorizedError,
-//   ForbiddenError,
-//   NotFoundError,
-//   ConflictError,
-// } = require("../utils/errors");
-
 const BadRequestError = require("../utils/BadRequestError");
 const UnauthorizedError = require("../utils/UnathorizedError");
 const ForbiddenError = require("../utils/ForbiddenError");
