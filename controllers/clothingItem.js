@@ -1,9 +1,12 @@
-const {
-  NotFoundError,
-  // INTERNAL_SERVER_ERROR,
-  ForbiddenError,
-  BadRequestError,
-} = require("../utils/errors");
+// const {
+//   NotFoundError,
+//   // INTERNAL_SERVER_ERROR,
+//   // ForbiddenError,
+//   // BadRequestError,
+// } = require("../utils/errors");
+const { BadRequestError } = require("../utils/BadRequestError");
+const { ForbiddenError } = require("../utils/ForbiddenError");
+const { NotFoundError } = require("../utils/NotFoundError");
 const ClothingItem = require("../models/clothingItems");
 
 const createItem = (req, res, next) => {

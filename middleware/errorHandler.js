@@ -6,13 +6,19 @@ const {
 } = require("../utils/errors");
 
 // error-handler.js
-const {
-  BadRequestError,
-  UnauthorizedError,
-  ForbiddenError,
-  NotFoundError,
-  ConflictError,
-} = require("../utils/errors");
+// const {
+//   BadRequestError,
+//   UnauthorizedError,
+//   ForbiddenError,
+//   NotFoundError,
+//   ConflictError,
+// } = require("../utils/errors");
+
+const BadRequestError = require("../utils/BadRequestError");
+const UnauthorizedError = require("../utils/UnathorizedError");
+const ForbiddenError = require("../utils/ForbiddenError");
+const NotFoundError = require("../utils/NotFoundError");
+const ConflictError = require("../utils/ConflictError");
 
 const errorHandler = (err, req, res, next) => {
   console.error(err);

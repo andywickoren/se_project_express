@@ -31,8 +31,7 @@ const validateSignup = celebrate({
       "string.min": 'The minimum length of the "name" field is 2',
       "string.max": 'The maximum length of the "name" field is 30',
     }),
-    avatar: Joi.string().required().custom(validateURL).messages({
-      "string.empty": 'The "avatar" field must be filled in',
+    avatar: Joi.string().optional().uri().messages({
       "string.uri": 'The "avatar" field must be a valid URL',
     }),
     email: Joi.string().required().email().messages({
@@ -57,6 +56,27 @@ const validateLogin = celebrate({
   }),
 });
 
+const validateUpdate = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30).optional().messages({
+      "string.min": 'The minimum length of the "name" field is 2',
+      "string.max": 'The maximum length of the "name" field is 30',
+    }),
+    avatar: Joi.string()
+      .optional()
+      .allow(null, "")
+      .custom((value, helpers) => {
+        if (value && !validator.isURL(value)) {
+          return helpers.error("string.uri");
+        }
+        return value;
+      })
+      .messages({
+        "string.uri": 'The "avatar" field must be a valid URL',
+      }),
+  }),
+});
+
 const validateId = (paramName) =>
   celebrate({
     params: Joi.object().keys({
@@ -72,4 +92,5 @@ module.exports = {
   validateSignup,
   validateLogin,
   validateId,
+  validateUpdate,
 };
